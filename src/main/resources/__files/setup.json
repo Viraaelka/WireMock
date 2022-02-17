@@ -1,0 +1,189 @@
+{
+  "wiremock": [
+    {
+      "request": {
+        "endpoint": "/restapi/accounts/\\d{1,12}/phone-numbers/\\d{1,9}",
+        "urlMapper": "UrlMatching",
+        "httpType": "PATCH"
+      },
+      "response": {
+        "responseBody": {
+          "fileName": "patch.json"
+        }
+      }
+    },
+    {
+      "request": {
+        "endpoint": "/restapi/accounts/.*/phone-numbers",
+        "urlMapper": "UrlMatching",
+        "httpType": "GET"
+      },
+      "response": {
+        "responseBody": {
+          "fileName": "phone-numbers.json"
+        },
+        "contentType": "application/json;charset=UTF-8"
+      },
+      "scenario": {
+        "name": "PhoneNumber",
+        "parameters": [
+          {
+            "requiredScenarioState": "Y",
+            "newScenarioState": "Cancel",
+            "request": {
+              "endpoint": "/restapi/accounts/.*/phone-numbers",
+              "urlMapper": "UrlMatching",
+              "httpType": "GET"
+            },
+            "response": {
+              "responseBody": {
+                "fileName": "jws.json"
+              },
+              "contentType": "application/json;charset=UTF-8"
+            }
+          },
+          {
+            "requiredScenarioState": "Cancel",
+            "newScenarioState": "Whaat",
+            "request": {
+              "endpoint": "/restapi/accounts/.*/phone-numbers",
+              "urlMapper": "UrlMatching",
+              "httpType": "GET"
+            },
+            "response": {
+              "responseBody": {
+                "fileName": "1.json"
+              },
+              "contentType": "application/json;charset=UTF-8"
+            }
+          },
+          {
+            "requiredScenarioState": "Whaat",
+            "newScenarioState": "C",
+            "request": {
+              "endpoint": "/restapi/accounts/.*/phone-numbers",
+              "urlMapper": "UrlMatching",
+              "httpType": "GET"
+            },
+            "response": {
+              "responseBody": {
+                "fileName": "2.json"
+              },
+              "contentType": "application/json;charset=UTF-8"
+            }
+          },
+          {
+            "requiredScenarioState": "C",
+            "newScenarioState": "V",
+            "request": {
+              "endpoint": "/restapi/accounts/.*/phone-numbers",
+              "urlMapper": "UrlMatching",
+              "httpType": "GET"
+            },
+            "response": {
+              "responseBody": {
+                "fileName": "1.json"
+              },
+              "contentType": "application/json;charset=UTF-8"
+            }
+          },
+          {
+            "requiredScenarioState": "V",
+            "request": {
+              "endpoint": "/restapi/accounts/.*/phone-numbers",
+              "urlMapper": "UrlMatching",
+              "httpType": "GET"
+            },
+            "response": {
+              "responseBody": {
+                "fileName": "jws.json"
+              },
+              "contentType": "application/json;charset=UTF-8"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "endpoint": "/restapi/accounts/.*/phone-numbers/bulk-add",
+        "urlMapper": "UrlMatching",
+        "requestBody": {
+          "fileName": "11",
+          "bodyMatcher": "Containing"
+        },
+        "httpType": "POST"
+      },
+      "response": {
+        "responseBody": {
+          "text": "{\n  \"records\": [\n    {\n      \"bulkItemSuccessful\": true,\n     \"id\": \"294543149\"\n    }\n  ]\n}\n"
+        }
+      }
+    },
+    {
+      "request": {
+        "endpoint": "/restapi/accounts/.*/licenses/provision",
+        "requestBody": {
+          "text": "{\n    \"addedLicenses\": [\n        {            \"quantity\": 3,\n            \"skuId\": \"LC_ALN_38\"\n        }\n    ]\n}",
+          "bodyMatcher": "EqualToJson"
+        },
+        "urlMapper": "UrlMatching",
+        "httpType": "POST"
+      },
+      "response": {
+        "status": 204
+      },
+      "scenario": {
+        "name": "License",
+        "parameters": [
+          {
+            "requiredScenarioState": "Y",
+            "newScenarioState": "Cancel",
+            "request": {
+              "endpoint": "/restapi/accounts/.*/licenses/provision",
+              "requestBody": {
+                "fileName": "patch",
+                "bodyMatcher": "Containing"
+              },
+              "urlMapper": "UrlMatching",
+              "httpType": "POST"
+            },
+            "response": {
+              "contentType": "application/json;charset=UTF-8",
+              "status": 204
+            }
+          },
+          {
+            "requiredScenarioState": "Cancel",
+            "request": {
+              "endpoint": "/restapi/accounts/.*/licenses/provision",
+              "urlMapper": "UrlMatching",
+              "requestBody": {
+                "text": ".*\"quantity\":\\d+\\,.*",
+                "bodyMatcher": "Matching"
+              },
+              "httpType": "POST"
+            },
+            "response": {
+              "contentType": "application/json;charset=UTF-8",
+              "status": 204
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "endpoint": "/restapi/account/.*/extension/.*/features\\?availableOnly=false",
+        "urlMapper": "UrlMatching",
+        "httpType": "GET"
+      },
+      "response": {
+        "responseBody": {
+          "fileName": "jws.json"
+        },
+        "status": 404
+      }
+    }
+  ]
+}

@@ -48,30 +48,4 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>
-                https://github.com/Viraaelka/wiremock
-            </url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-
-        <repository>
-            <id>snapshots</id>
-            <url>
-                https://github.com/Viraaelka/wiremock
-            </url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-    </repositories>
-
 </project>
